@@ -15,13 +15,36 @@ A simple Ecommerce app to showcase MEAN stack skills.
 
 ---
 ## Project Structure
+## Project Structure
 
 ecommerce-backend/
-│── index.js # App entry point
-│── models/ # Database models (User, Product, etc.)
-│── controllers/ # Business logic for each feature
-│── routes/ # Route definitions
-│── middleware/ # Auth & role middlewares
+│── index.js                # Entry point: starts the server, connects DB, loads routes
+│
+├── models/                 # Mongoose schemas (data layer)
+│   ├── User.js
+│   ├── Product.js
+│   ├── Category.js
+│   ├── Cart.js
+│   └── Order.js
+│
+├── controllers/            # Business logic (request handling)
+│   ├── authController.js
+│   ├── userController.js
+│   ├── productController.js
+│   ├── categoryController.js
+│   ├── cartController.js
+│   └── orderController.js
+│
+├── routes/                 # API endpoints (maps to controllers)
+│   ├── authRoutes.js
+│   ├── userRoutes.js
+│   ├── productRoutes.js
+│   ├── categoryRoutes.js
+│   ├── cartRoutes.js
+│   └── orderRoutes.js
+│
+└── middleware/             # Custom middlewares
+    └── auth.js             # JWT authentication & role-based access
 
 ---
 
