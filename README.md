@@ -13,7 +13,6 @@ A simple Ecommerce app to showcase MEAN stack skills.
 - **Cart**: Customers can add, update, remove items.  
 - **Orders**: Place orders, track status (admin can update).  
 
----
 
 ---
 
