@@ -15,7 +15,7 @@ A simple Ecommerce app to showcase MEAN stack skills.
 
 ---
 ## Project Structure
-## Project Structure
+```bash
 
 ecommerce-backend/
 │── index.js                # Entry point: starts the server, connects DB, loads routes
