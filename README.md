@@ -14,37 +14,6 @@ A simple Ecommerce app to showcase MEAN stack skills.
 - **Orders**: Place orders, track status (admin can update).  
 
 ---
-## Project Structure
-```bash
-
-ecommerce-backend/
-│── index.js                # Entry point: starts the server, connects DB, loads routes
-│
-├── models/                 # Mongoose schemas (data layer)
-│   ├── User.js
-│   ├── Product.js
-│   ├── Category.js
-│   ├── Cart.js
-│   └── Order.js
-│
-├── controllers/            # Business logic (request handling)
-│   ├── authController.js
-│   ├── userController.js
-│   ├── productController.js
-│   ├── categoryController.js
-│   ├── cartController.js
-│   └── orderController.js
-│
-├── routes/                 # API endpoints (maps to controllers)
-│   ├── authRoutes.js
-│   ├── userRoutes.js
-│   ├── productRoutes.js
-│   ├── categoryRoutes.js
-│   ├── cartRoutes.js
-│   └── orderRoutes.js
-│
-└── middleware/             # Custom middlewares
-    └── auth.js             # JWT authentication & role-based access
 
 ---
 
@@ -84,4 +53,40 @@ ecommerce-backend/
 - `POST /api/orders` (customer) → Place order  
 - `GET /api/orders` (customer/admin) → Get orders  
 - `GET /api/orders/:id` (customer) → Get order details  
-- `PUT /api/orders/:id` (admin) → Update order status  
+- `PUT /api/orders/:id` (admin) → Update order status
+
+  ---
+  
+## Project Structure
+```bash
+
+ecommerce-backend/
+│── index.js                # Entry point: starts the server, connects DB, loads routes
+│
+├── models/                 # Mongoose schemas (data layer)
+│   ├── User.js
+│   ├── Product.js
+│   ├── Category.js
+│   ├── Cart.js
+│   └── Order.js
+│
+├── controllers/            # Business logic (request handling)
+│   ├── authController.js
+│   ├── userController.js
+│   ├── productController.js
+│   ├── categoryController.js
+│   ├── cartController.js
+│   └── orderController.js
+│
+├── routes/                 # API endpoints (maps to controllers)
+│   ├── authRoutes.js
+│   ├── userRoutes.js
+│   ├── productRoutes.js
+│   ├── categoryRoutes.js
+│   ├── cartRoutes.js
+│   └── orderRoutes.js
+│
+└── middleware/             # Custom middlewares
+    └── auth.js             # JWT authentication & role-based access
+
+
