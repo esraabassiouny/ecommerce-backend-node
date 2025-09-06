@@ -1,21 +1,11 @@
-// userController.js
 
-// Get my profile
-exports.getMe = async (req, res) => {
-  // TODO: Return the logged-in user's info (from req.user)
+exports.getProfile = async (req, res) => {
 };
 
 // Update my profile
-exports.updateMe = async (req, res) => {
-  // TODO: Update logged-in user's info (name, email, password)
+exports.updateProfile = async (req, res) => {
+
 };
 
-// Get all users (Admin only)
-exports.getAllUsers = async (req, res) => {
-  // TODO: Fetch all users from DB
-};
-
-// Delete a user (Admin only)
-exports.deleteUser = async (req, res) => {
-  // TODO: Delete user by ID
+exports.deleteProfile = async (req, res) => {
 };

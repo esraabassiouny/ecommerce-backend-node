@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose"); 
 const logger = require("./middleware/logger");
+require("dotenv").config();
 
 app.use(
   cors({
@@ -21,7 +22,7 @@ app.use((err, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://EcoMeanDB:EcoMeanDB2025@ecommerce-mean-db.9ac0d4z.mongodb.net/"
+    process.env.MONGO_URI
   )
   .then(() => {
     console.log(" DB CONNECTED Successfully ");
@@ -39,7 +40,7 @@ mongoose
 // app.use("/api/orders", require("./routes/orderRoutes"));
 
 
-let port = 5000;
+let port = process.env.PORT;
 app.listen(port, () => {
   console.log(`${port} works!`);
 });
