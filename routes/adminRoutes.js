@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/adminController");
-const { authMiddleware, roleMiddleware } = require("../middlewares/auth");
+const isAdmin = require("../middlewares/isAdmin");
+const isAuth = require("../middlewares/isAuth");
 
-// All admin routes → must be authenticated + role: admin
-router.use(authMiddleware, roleMiddleware(["admin"]));
+router.use(isAuth, isAdmin);
 
 router.get("/users", adminController.getAllUsers);
 router.get("/users/:id", adminController.getUserById);
 router.patch("/users/:id", adminController.updateUser);
 router.delete("/users/:id", adminController.deleteUser);
 
-router.patch("/users/:id/role", adminController.updateUserRole);
+// router.patch("/users/:id/role", adminController.updateUserRole);
 
-router.get("/stats", adminController.getStats);
+// router.get("/stats", adminController.getStats);
 
 module.exports = router;

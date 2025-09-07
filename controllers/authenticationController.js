@@ -1,38 +1,42 @@
-const { User } = require("../models/User.js");
+const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // Register new user
 exports.register = async (req, res) => {
-  const NewUser = req.body;
+  const { name, email, password } = req.body;
 
-  if (!NewUser.name || !NewUser.email || !NewUser.password) {
+  if (!name || !email || !password) {
     return res.status(400).json({ message: "Name, email and password are required" });
   }
 
   try {
-    User.create(NewUser, (err, user) => {
-      if (err) {
-        if (err.code === 11000) {
-          return res.status(400).json({ message: "Email already exists" });
-        }
-        return res.status(400).json({ message: "Error creating user" });
-      }
-      console.log("User created:", user);
+    const user = await User.create({ name, email, password });
+
+    const token = generateToken(user);
+
+    return res.status(201).json({
+      message: "User created successfully",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
     console.error(err);
-    res.status(400).json({ message: "Registration error" });
+    return res.status(400).json({ message: "Error creating user" });
   }
-
-  generateToken(user);
-
 };
 
 // Login user
 exports.login = async (req, res) => {
-
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -40,43 +44,39 @@ exports.login = async (req, res) => {
   }
 
   try {
-    const user = await User.findone({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-    
+
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    generateToken(user);
+    const token = generateToken(user);
 
-    res.status(200).json({ message: "login successful", token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
-
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (err) {
     console.error(err);
-    res.status(400).json({ message: "login error" });
+    res.status(400).json({ message: "Login error" });
   }
-
 };
 
-
-
-// --------------------------------------------------------------------------------------------------------------
-
-function generateToken(user)
-{
-    jwt.sign(
+// ----------------------------------------------------
+function generateToken(user) {
+  return jwt.sign(
     { userId: user._id, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" },
-    (err, token) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error generating token" });
-      }
-      res.status(201).json({ message: "User created successfully", token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
-    }
+    { expiresIn: "1h" }
   );
 }
