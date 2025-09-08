@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const mongoose = require("mongoose"); 
+const cors = require("cors");
 const logger = require("./middlewares/logger");
+const cartRoutes = require("./routes/cartRoutes");
+const connectDB = require('./db')
 // const productRoutes = require("./routes/productRoutes.js");
 // const categoryRoutes = require("./routes/categoryRoutes.js");
 require("dotenv").config();
@@ -21,7 +23,6 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something's wrong :( Please try again later.");
 });
 
-
 mongoose
   .connect(
     process.env.MONGO_URI
@@ -32,10 +33,12 @@ mongoose
   .catch((err) => {
     console.log(err.message);
   });
-
+// connectDB;
 
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/cart", cartRoutes);
+
 // app.use("/api/users", require("./routes/userRoutes"));
 
 // app.use("/api/cart", require("./routes/cartRoutes"));
