@@ -38,7 +38,6 @@ exports.register = async (req, res) => {
 // Login user
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-
   if (!email || !password) {
     return res.status(400).json({ message: "Email and password are required" });
   }
@@ -77,6 +76,6 @@ function generateToken(user) {
   return jwt.sign(
     { userId: user._id, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "1D" }
   );
 }
