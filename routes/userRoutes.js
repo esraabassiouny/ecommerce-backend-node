@@ -4,11 +4,13 @@ const router = express.Router();
 const { isAuth } = require("../middleware/auth");
 const { getUserProfile, updateUserProfile } = require("../controllers/userController");
 
+router.use(isAuth);
+
 // Get user profile
-router.get("/profile", isAuth, getUserProfile);
+router.get("/profile", getUserProfile);
 
 // Update user profile
-router.patch("/profile", isAuth, updateUserProfile);
+router.patch("/profile", updateUserProfile);
 
 
 module.exports = router;
