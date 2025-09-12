@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const logger = require("./middlewares/logger");
 const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const productRoutes = require("./routes/productRoutes");
+
 const connectDB = require('./db')
 // const productRoutes = require("./routes/productRoutes.js");
 // const categoryRoutes = require("./routes/categoryRoutes.js");
@@ -38,6 +41,8 @@ mongoose
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/products", productRoutes)
 
 // app.use("/api/users", require("./routes/userRoutes"));
 
