@@ -1,5 +1,4 @@
 const User = require("../models/User.js");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -70,6 +69,19 @@ exports.login = async (req, res) => {
     res.status(400).json({ message: "Login error" });
   }
 };
+
+
+const blacklist = new Set(); 
+exports.blacklist = blacklist;
+
+exports.logout = (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (token) {
+    blacklist.add(token); 
+  }
+  res.json({ message: "Logged out successfully", data: blacklist });
+};
+
 
 // ----------------------------------------------------
 function generateToken(user) {
