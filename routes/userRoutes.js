@@ -1,16 +1,15 @@
-const User = require("../models/userModel");
 const express = require("express");
 const router = express.Router();
 const { isAuth } = require("../middleware/auth");
-const { getUserProfile, updateUserProfile } = require("../controllers/userController");
+const userController = require("../controllers/userController");
 
+// All routes below require authentication
 router.use(isAuth);
 
-// Get user profile
-router.get("/profile", getUserProfile);
-
-// Update user profile
-router.patch("/profile", updateUserProfile);
+router.get("/profile", userController.getProfile);
+router.patch("/profile", userController.updateProfile);
+router.delete("/profile", userController.deleteProfile);
+router.patch("/profile/password", userController.changePassword);
 
 
 module.exports = router;
