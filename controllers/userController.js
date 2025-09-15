@@ -20,7 +20,7 @@ exports.updateProfile = async (req, res) => {
     delete updates.password;
     delete updates.role;
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updates, { new: true, runValidators: true }).select("-password");
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, { new: true, runValidators: true }).select("-password -role");
     if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
     res.status(200).json(updatedUser);
