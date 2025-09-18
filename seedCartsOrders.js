@@ -31,26 +31,27 @@ async function seedCartsAndOrders() {
       return { totalPrice: subtotal, shipping, tax, orderTotal };
     };
 
-    // Assign some products to carts
-    const cart1Items = [
-      {
-        product: products[0]._id,
-        quantity: 2,
-        price: products[0].price,
-      },
-      {
-        product: products[1]._id,
-        quantity: 1,
-        price: products[1].price,
-      },
-    ];
-    const cart2Items = [
-      {
-        product: products[2]._id,
-        quantity: 3,
-        price: products[2].price,
-      },
-    ];
+const cart1Items = [
+  {
+    product: products[0]._id,
+    quantity: 2,
+    price: products[0].price * 2, // price = product price * quantity
+  },
+  {
+    product: products[1]._id,
+    quantity: 1,
+    price: products[1].price * 1,
+  },
+];
+
+const cart2Items = [
+  {
+    product: products[2]._id,
+    quantity: 3,
+    price: products[2].price * 3,
+  },
+];
+
 
     const cart1Totals = calcCartTotals(cart1Items);
     const cart2Totals = calcCartTotals(cart2Items);
@@ -83,7 +84,6 @@ function randomDate(daysOffset = 0, past = false) {
   return date;
 }
 
-// Insert some orders with deliveryDate
 const orders = await Order.insertMany([
   {
     user: users[0]._id,
@@ -91,15 +91,15 @@ const orders = await Order.insertMany([
       {
         product: products[3]._id,
         quantity: 1,
-        price: products[3].price,
+        price: products[3].price * 1,
       },
     ],
     shippingAddress: users[0].address,
     paymentMethod: "Credit Card",
     shippingPrice: 20,
-    totalPrice: products[3].price + 20,
+    totalPrice: products[3].price * 1 + 20,
     status: "Pending",
-    deliveryDate: randomDate(5, false), // 5 days in future
+    deliveryDate: randomDate(5, false),
   },
   {
     user: users[0]._id,
@@ -107,7 +107,7 @@ const orders = await Order.insertMany([
       {
         product: products[4]._id,
         quantity: 2,
-        price: products[4].price,
+        price: products[4].price * 2,
       },
     ],
     shippingAddress: users[0].address,
@@ -115,7 +115,7 @@ const orders = await Order.insertMany([
     shippingPrice: 15,
     totalPrice: products[4].price * 2 + 15,
     status: "Shipped",
-    deliveryDate: randomDate(2, false), // 2 days in future
+    deliveryDate: randomDate(2, false),
   },
   {
     user: users[1]._id,
@@ -123,20 +123,20 @@ const orders = await Order.insertMany([
       {
         product: products[5]._id,
         quantity: 1,
-        price: products[5].price,
+        price: products[5].price * 1,
       },
       {
         product: products[6]._id,
         quantity: 2,
-        price: products[6].price,
+        price: products[6].price * 2,
       },
     ],
     shippingAddress: users[1].address,
     paymentMethod: "Credit Card",
     shippingPrice: 25,
-    totalPrice: products[5].price + products[6].price * 2 + 25,
+    totalPrice: products[5].price * 1 + products[6].price * 2 + 25,
     status: "Delivered",
-    deliveryDate: randomDate(7, true), // 7 days ago
+    deliveryDate: randomDate(7, true),
   },
   {
     user: users[11]._id,
@@ -144,20 +144,20 @@ const orders = await Order.insertMany([
       {
         product: products[5]._id,
         quantity: 1,
-        price: products[5].price,
+        price: products[5].price * 1,
       },
       {
         product: products[6]._id,
         quantity: 2,
-        price: products[6].price,
+        price: products[6].price * 2,
       },
     ],
     shippingAddress: users[1].address,
     paymentMethod: "Credit Card",
     shippingPrice: 25,
-    totalPrice: products[5].price + products[6].price * 2 + 25,
+    totalPrice: products[5].price * 1 + products[6].price * 2 + 25,
     status: "Delivered",
-    deliveryDate: randomDate(3, true), // 3 days ago
+    deliveryDate: randomDate(3, true),
   },
 ]);
 
