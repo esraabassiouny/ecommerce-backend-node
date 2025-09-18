@@ -12,10 +12,14 @@ const connectDB = require('./db')
 // const categoryRoutes = require("./routes/categoryRoutes.js");
 require("dotenv").config();
 
+// app.use(
+//   cors({
+//     origin: "*",
+//   })
+// );
+
 app.use(
-  cors({
-    origin: "*",
-  })
+  cors()
 );
 
 app.use(express.json());

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Cart = require("./models/Cart");
 const Order = require("./models/Order");
 const User = require("./models/User");
-const {Product} = require("./models/Product");
+const { Product } = require("./models/Product");
 
 async function seedCartsAndOrders() {
   try {
@@ -22,48 +22,59 @@ async function seedCartsAndOrders() {
       return process.exit(1);
     }
 
+    // helper function to calculate totals
+    const calcCartTotals = (items) => {
+      const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+      const shipping = subtotal > 100 ? 0 : 20; // free shipping if > 100
+      const tax = subtotal * 0.14; // 14% VAT
+      const orderTotal = subtotal + shipping + tax;
+      return { totalPrice: subtotal, shipping, tax, orderTotal };
+    };
+
     // Assign some products to carts
+    const cart1Items = [
+      {
+        product: products[0]._id,
+        quantity: 2,
+        price: products[0].price,
+      },
+      {
+        product: products[1]._id,
+        quantity: 1,
+        price: products[1].price,
+      },
+    ];
+    const cart2Items = [
+      {
+        product: products[2]._id,
+        quantity: 3,
+        price: products[2].price,
+      },
+    ];
+
+    const cart1Totals = calcCartTotals(cart1Items);
+    const cart2Totals = calcCartTotals(cart2Items);
+
     const carts = await Cart.insertMany([
       {
         userId: users[0]._id,
-        items: [
-          {
-            product: products[0]._id,
-            name: products[0].name,
-            quantity: 2,
-            price: products[0].price,
-          },
-          {
-            product: products[1]._id,
-            name: products[1].name,
-            quantity: 1,
-            price: products[1].price,
-          },
-        ],
-        totalPrice: products[0].price * 2 + products[1].price,
+        items: cart1Items,
+        ...cart1Totals,
       },
       {
         userId: users[1]._id,
-        items: [
-          {
-            product: products[2]._id,
-            name: products[2].name,
-            quantity: 3,
-            price: products[2].price,
-          },
-        ],
-        totalPrice: products[2].price * 3,
+        items: cart2Items,
+        ...cart2Totals,
       },
     ]);
 
-    // Insert some orders (multiple orders for same user)
+    // Insert some orders (leave as-is, or update later with tax too if needed)
     const orders = await Order.insertMany([
       {
         user: users[0]._id,
         items: [
           {
             product: products[3]._id,
-            name: products[3].name,
             quantity: 1,
             price: products[3].price,
           },
@@ -79,7 +90,6 @@ async function seedCartsAndOrders() {
         items: [
           {
             product: products[4]._id,
-            name: products[4].name,
             quantity: 2,
             price: products[4].price,
           },
@@ -95,13 +105,31 @@ async function seedCartsAndOrders() {
         items: [
           {
             product: products[5]._id,
-            name: products[5].name,
             quantity: 1,
             price: products[5].price,
           },
           {
             product: products[6]._id,
-            name: products[6].name,
+            quantity: 2,
+            price: products[6].price,
+          },
+        ],
+        shippingAddress: users[1].address,
+        paymentMethod: "Credit Card",
+        shippingPrice: 25,
+        totalPrice: products[5].price + products[6].price * 2 + 25,
+        status: "Delivered",
+      },
+      {
+        user: "68bd2d8494e30b8403859f1c",
+        items: [
+          {
+            product: products[5]._id,
+            quantity: 1,
+            price: products[5].price,
+          },
+          {
+            product: products[6]._id,
             quantity: 2,
             price: products[6].price,
           },

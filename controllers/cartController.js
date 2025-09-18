@@ -9,7 +9,8 @@ exports.getCart = async (req, res) => {
   // TODO: Fetch cart items for logged-in user
   try{
     const userId = req.user.userId;
-    let cart = await Cart.findOne({ userId });
+    // const userId = req.params.id;
+    let cart = await Cart.findOne({ userId }).populate("items.product");;
     if(!cart || cart.items.length === 0) res.status(404).json({ message: 'Cart not found' });
     return res.status(200).json({cart});
   } catch(err){
@@ -64,8 +65,8 @@ exports.addToCart = async (req, res) => {
 exports.updateCartItem = async (req, res) => {
   // TODO: Change quantity for a specific product in cart
   try{
-    const { productId, quantity } = req.body;
-    const userId = req.user.userId;
+    const {userId, productId, quantity } = req.body;
+    // const userId = req.user.userId;
     let cart = await Cart.findOne({ userId });
     if (!cart || cart.items.length === 0) return res.status(404).json({ message: 'Cart not found' });
     const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
@@ -97,8 +98,10 @@ exports.updateCartItem = async (req, res) => {
 exports.removeCartItem = async (req, res) => {
   // TODO: Remove product from cart
   try{
-    const userId = req.user.userId;
-    const { productId } = req.params;
+    // const userId = req.user.userId;
+    const {userId} = req.body;
+    console.log(userId)
+    const {productId } = req.params;
     const cart = await Cart.findOne({ userId });
     if (!cart || cart.items.length === 0) return res.status(404).json({ message: 'Cart not found' });
     let item = cart.items.find(item => item.product.toString() === productId);
@@ -106,9 +109,9 @@ exports.removeCartItem = async (req, res) => {
     cart.items = cart.items.filter(item => item.product.toString() !== productId);
     cart.totalPrice = cart.items.reduce((acc, item) => acc + item.price, 0);
     await cart.save();
-    res.json(cart);
+    return res.json({cart});
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    return res.status(500).json({ error: err.message })
   }
 };
 
