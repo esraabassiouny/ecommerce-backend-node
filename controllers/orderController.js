@@ -10,11 +10,10 @@ exports.getOrders = async (req, res) => {
   // - If customer: return only their orders
   // - If admin: return all orders
   try{
-    //const userId = req.user.userId;
 
-    const userId = req.params.id;
+    const userId = req.user.userId;
     let orders = await Order.find({ user: userId })
-    // .populate('items.product');
+    .populate('items.product');
 
     if(!orders) return res.status(404).json({ message: 'Orders not found' });
 
@@ -100,6 +99,8 @@ exports.createOrder = async (req, res) => {
 
     // Calculate total
     const itemsTotal = cart.items.reduce((acc, item) => acc + item.quantity * item.price, 0);
+    const estimatedDate = new Date();
+    estimatedDate.setDate(estimatedDate.getDate() + 3);
 
     const order = await Order.create({
       user: userId,
@@ -108,6 +109,7 @@ exports.createOrder = async (req, res) => {
       paymentMethod,
       shippingPrice,
       totalPrice: itemsTotal + shippingPrice,
+      deliveryDate: estimatedDate,
       status,
     });
 

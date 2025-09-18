@@ -22,7 +22,7 @@ const cartSchema = mongoose.Schema({
   items: [cartItemSchema],
 
   totalPrice: { type: Number, required: true, default: 0 }, // subtotal
-  shipping: { type: Number, required: true, default: 0 },
+  shipping: { type: Number, required: true, default: 20 },
   tax: { type: Number, required: true, default: 0 },
   orderTotal: { type: Number, required: true, default: 0 },
 

@@ -3,11 +3,11 @@ const orderController = require('../controllers/orderController');
 const isAuth = require('../middlewares/isAuth');
 const router = express.Router();
 
-// router.use(isAuth);
+router.use(isAuth);
 
-router.get('/:id', orderController.getOrders);
+router.get('/', orderController.getOrders);
 
-// router.get('/:id', orderController.getOrderById);
+router.get('/:id', orderController.getOrderById);
 
 router.post('/create-order', orderController.createOrder);
 

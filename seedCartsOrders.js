@@ -25,8 +25,8 @@ async function seedCartsAndOrders() {
     // helper function to calculate totals
     const calcCartTotals = (items) => {
       const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-      const shipping = subtotal > 100 ? 0 : 20; // free shipping if > 100
-      const tax = subtotal * 0.14; // 14% VAT
+      const shipping = 20;
+      const tax = subtotal * 0.05; 
       const orderTotal = subtotal + shipping + tax;
       return { totalPrice: subtotal, shipping, tax, orderTotal };
     };
@@ -66,81 +66,100 @@ async function seedCartsAndOrders() {
         items: cart2Items,
         ...cart2Totals,
       },
+      {
+        userId: users[11]._id,
+        items: cart2Items,
+        ...cart2Totals,
+      },
     ]);
 
-    // Insert some orders (leave as-is, or update later with tax too if needed)
-    const orders = await Order.insertMany([
+function randomDate(daysOffset = 0, past = false) {
+  const date = new Date();
+  if (past) {
+    date.setDate(date.getDate() - daysOffset);
+  } else {
+    date.setDate(date.getDate() + daysOffset);
+  }
+  return date;
+}
+
+// Insert some orders with deliveryDate
+const orders = await Order.insertMany([
+  {
+    user: users[0]._id,
+    items: [
       {
-        user: users[0]._id,
-        items: [
-          {
-            product: products[3]._id,
-            quantity: 1,
-            price: products[3].price,
-          },
-        ],
-        shippingAddress: users[0].address,
-        paymentMethod: "Credit Card",
-        shippingPrice: 20,
-        totalPrice: products[3].price + 20,
-        status: "Pending",
+        product: products[3]._id,
+        quantity: 1,
+        price: products[3].price,
+      },
+    ],
+    shippingAddress: users[0].address,
+    paymentMethod: "Credit Card",
+    shippingPrice: 20,
+    totalPrice: products[3].price + 20,
+    status: "Pending",
+    deliveryDate: randomDate(5, false), // 5 days in future
+  },
+  {
+    user: users[0]._id,
+    items: [
+      {
+        product: products[4]._id,
+        quantity: 2,
+        price: products[4].price,
+      },
+    ],
+    shippingAddress: users[0].address,
+    paymentMethod: "COD",
+    shippingPrice: 15,
+    totalPrice: products[4].price * 2 + 15,
+    status: "Shipped",
+    deliveryDate: randomDate(2, false), // 2 days in future
+  },
+  {
+    user: users[1]._id,
+    items: [
+      {
+        product: products[5]._id,
+        quantity: 1,
+        price: products[5].price,
       },
       {
-        user: users[0]._id,
-        items: [
-          {
-            product: products[4]._id,
-            quantity: 2,
-            price: products[4].price,
-          },
-        ],
-        shippingAddress: users[0].address,
-        paymentMethod: "COD",
-        shippingPrice: 15,
-        totalPrice: products[4].price * 2 + 15,
-        status: "Shipped",
+        product: products[6]._id,
+        quantity: 2,
+        price: products[6].price,
+      },
+    ],
+    shippingAddress: users[1].address,
+    paymentMethod: "Credit Card",
+    shippingPrice: 25,
+    totalPrice: products[5].price + products[6].price * 2 + 25,
+    status: "Delivered",
+    deliveryDate: randomDate(7, true), // 7 days ago
+  },
+  {
+    user: users[11]._id,
+    items: [
+      {
+        product: products[5]._id,
+        quantity: 1,
+        price: products[5].price,
       },
       {
-        user: users[1]._id,
-        items: [
-          {
-            product: products[5]._id,
-            quantity: 1,
-            price: products[5].price,
-          },
-          {
-            product: products[6]._id,
-            quantity: 2,
-            price: products[6].price,
-          },
-        ],
-        shippingAddress: users[1].address,
-        paymentMethod: "Credit Card",
-        shippingPrice: 25,
-        totalPrice: products[5].price + products[6].price * 2 + 25,
-        status: "Delivered",
+        product: products[6]._id,
+        quantity: 2,
+        price: products[6].price,
       },
-      {
-        user: "68bd2d8494e30b8403859f1c",
-        items: [
-          {
-            product: products[5]._id,
-            quantity: 1,
-            price: products[5].price,
-          },
-          {
-            product: products[6]._id,
-            quantity: 2,
-            price: products[6].price,
-          },
-        ],
-        shippingAddress: users[1].address,
-        paymentMethod: "Credit Card",
-        shippingPrice: 25,
-        totalPrice: products[5].price + products[6].price * 2 + 25,
-        status: "Delivered",
-      },
-    ]);
+    ],
+    shippingAddress: users[1].address,
+    paymentMethod: "Credit Card",
+    shippingPrice: 25,
+    totalPrice: products[5].price + products[6].price * 2 + 25,
+    status: "Delivered",
+    deliveryDate: randomDate(3, true), // 3 days ago
+  },
+]);
 
     console.log("✅ Carts and Orders seeded successfully");
     process.exit();

@@ -53,7 +53,7 @@ const orderSchema = new mongoose.Schema({
   shippingPrice: {
     type: Number,
     required: true,
-    default: 0
+    default: 20
   },
   totalPrice: {
     type: Number,
@@ -63,6 +63,9 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
     default: 'Pending'
+  },
+  deliveryDate: {
+    type: Date,
   }
 }, { timestamps: true });
 
