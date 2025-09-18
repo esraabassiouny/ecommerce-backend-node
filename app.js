@@ -30,6 +30,9 @@ app.use((err, req, res, next) => {
 });
 
 
+app.use(cors());
+
+
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/cart", cartRoutes);
