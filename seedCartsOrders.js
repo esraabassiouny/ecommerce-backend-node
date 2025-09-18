@@ -18,7 +18,7 @@ async function seedCartsAndOrders() {
     const products = await Product.find();
 
     if (users.length < 2 || products.length < 5) {
-      console.log("❌ Need at least 2 users and 5 products to seed carts/orders");
+      console.log("Need at least 2 users and 5 products to seed carts/orders");
       return process.exit(1);
     }
 

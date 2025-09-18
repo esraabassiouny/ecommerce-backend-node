@@ -8,8 +8,15 @@ const bcrypt = require("bcrypt");
 
 router.post("/register", authController.register);
 router.post("/login", authController.login);
-// router.post("/logout", exports.logout);
+router.post("/logout", authController.logout);
 // router.post("/reset-password/:token", exports.resetPassword);
+
+
+
+
+
+
+
 
 
 router.post("/create-admin", async (req, res) => {

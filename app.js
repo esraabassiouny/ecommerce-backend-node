@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose"); 
 const cors = require("cors");
 const logger = require("./middlewares/logger");
 const cartRoutes = require("./routes/cartRoutes");
@@ -30,17 +29,6 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something's wrong :( Please try again later.");
 });
 
-mongoose
-  .connect(
-    process.env.MONGO_URI
-  )
-  .then(() => {
-    console.log(" DB CONNECTED Successfully ");
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
-// connectDB;
 
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
