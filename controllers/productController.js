@@ -4,7 +4,8 @@ const { deleteFilesIfLocal } = require("../utils/fileHelper");
 // GET all products
 async function getProducts(req, res) {
   try {
-    const products = await Product.find();
+    const products = await Product.find()
+      .populate('categoryId', 'name'); 
     res.status(200).json({ data: products });
   } catch (err) {
     res.status(500).json({ message: "Error getting products" });
@@ -23,28 +24,31 @@ async function getProductById(req, res) {
   }
 }
 
-// POST create product
 async function addProduct(req, res) {
   try {
-     const files = req.files || [];
-     const images = files.map(f => '/uploads/' + f.filename);
-     const { name, description, price, stock, categoryId, isFeatured } = req.body;
-   const product = await Product.create({
-      name,
-      description,
-      price,
-      stock,
-      categoryId,
+    const { _id, ...data } = req.body; 
+    const files = req.files || [];
+    const images = files.map(f => '/uploads/' + f.filename);
+
+    
+    let categoryId = data.categoryId;
+    if (!categoryId || categoryId.trim() === "") {
+      categoryId = undefined;
+    }
+
+    const product = await Product.create({
+      ...data,
       images,
-      isFeatured: isFeatured === 'true' || isFeatured === true
+      categoryId, // ممكن undefined
+      isFeatured: data.isFeatured === 'true' || data.isFeatured === true
     });
 
     res.status(201).json({ message: "Product added", data: product });
   } catch (err) {
-    res.status(500).json({ message: "Error adding product" });
+    console.error("❌ Error creating product:", err);
+    res.status(400).json({ error: err.message });
   }
 }
-
 // PUT update product
 async function updateProduct(req, res) {
   try {
