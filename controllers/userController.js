@@ -45,7 +45,7 @@ exports.deleteProfile = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.user.id; // comes from JWT via isAuth middleware
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
@@ -56,7 +56,9 @@ exports.changePassword = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const isMatch = await user.comparePassword(currentPassword);
-    if (!isMatch) return res.status(401).json({ message: "Current password is incorrect" });
+    if (!isMatch) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
 
     user.password = newPassword;
     await user.save();
@@ -66,3 +68,4 @@ exports.changePassword = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+

@@ -86,7 +86,11 @@ exports.logout = (req, res) => {
 // ----------------------------------------------------
 function generateToken(user) {
   return jwt.sign(
-    { userId: user._id, role: user.role },
+    { 
+      userId: user._id,
+      name: user.name,
+      role: user.role 
+    },
     process.env.JWT_SECRET,
     { expiresIn: "1D" }
   );
