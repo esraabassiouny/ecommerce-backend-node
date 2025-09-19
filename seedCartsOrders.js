@@ -33,12 +33,12 @@ async function seedCartsAndOrders() {
 
 const cart1Items = [
   {
-    product: products[0]._id,
+    product: products[3]._id,
     quantity: 2,
-    price: products[0].price * 2, // price = product price * quantity
+    price: products[0].price * 2,
   },
   {
-    product: products[1]._id,
+    product: products[5]._id,
     quantity: 1,
     price: products[1].price * 1,
   },
@@ -47,8 +47,13 @@ const cart1Items = [
 const cart2Items = [
   {
     product: products[2]._id,
+    quantity: 1,
+    price: products[2].price * 1,
+  },
+    {
+    product: products[10]._id,
     quantity: 3,
-    price: products[2].price * 3,
+    price: products[10].price * 3,
   },
 ];
 

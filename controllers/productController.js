@@ -5,7 +5,7 @@ const { deleteFilesIfLocal } = require("../utils/fileHelper");
 async function getProducts(req, res) {
   try {
     const products = await Product.find()
-      .populate('categoryId', 'name'); 
+      // .populate('categoryId', 'name'); 
     res.status(200).json({ data: products });
   } catch (err) {
     res.status(500).json({ message: "Error getting products" });

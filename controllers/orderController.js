@@ -15,7 +15,7 @@ exports.getOrders = async (req, res) => {
     let orders = await Order.find({ user: userId })
     .populate('items.product');
 
-    if(!orders) return res.status(404).json({ message: 'Orders not found' });
+    if(orders.length === 0) return res.status(404).json({ message: 'Orders not found' });
 
     return res.status(200).json(orders);
   } catch(err){

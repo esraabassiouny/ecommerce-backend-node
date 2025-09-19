@@ -32,7 +32,7 @@ cartSchema.pre("save", function (next) {
   this.totalPrice = this.items.reduce((acc, item) => acc + (item.price), 0);
 
   this.shipping = 20;   
-  this.tax = this.totalPrice * 0.05;              
+  this.tax = this.totalPrice * 0.04;              
   this.orderTotal = this.totalPrice + this.shipping + this.tax;
 
   next();

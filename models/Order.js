@@ -55,6 +55,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
     default: 20
   },
+  tax: { type: Number, required: true, default: 0 },
   totalPrice: {
     type: Number,
     required: true
@@ -69,9 +70,10 @@ const orderSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-orderSchema.pre("save", function (next) {
+orderSchema.pre("save", function (next) {     
   this.totalPrice = this.items.reduce((acc, item) => acc + item.price, 0);
-  this.totalPrice += this.shippingPrice;
+  this.tax = this.totalPrice * 0.04;         
+  this.totalPrice += this.shippingPrice + this.tax;
   next();
 });
 
