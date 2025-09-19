@@ -1,14 +1,16 @@
 const { Product } = require("../models/Product.js");
+const { Category } = require("../models/Category.js");
 const mongoose = require("mongoose");
 const { deleteFilesIfLocal } = require("../utils/fileHelper"); 
 // GET all products
 async function getProducts(req, res) {
   try {
-    const products = await Product.find()
-      // .populate('categoryId', 'name'); 
+   const products = await Product.find()
+      .populate('categoryId', 'name');
     res.status(200).json({ data: products });
   } catch (err) {
-    res.status(500).json({ message: "Error getting products" });
+    console.error("❌ Error in getProducts:", err);
+  res.status(500).json({ message: err.message });
   }
 }
 
@@ -17,6 +19,7 @@ async function getProductById(req, res) {
   try {
     const id = req.params.id;
     const product = await Product.findById(id);
+    
     if (!product) return res.status(404).json({ message: "Product not found" });
     res.status(200).json({ data: product });
   } catch (err) {
@@ -39,7 +42,7 @@ async function addProduct(req, res) {
     const product = await Product.create({
       ...data,
       images,
-      categoryId, // ممكن undefined
+      categoryId, 
       isFeatured: data.isFeatured === 'true' || data.isFeatured === true
     });
 
