@@ -72,11 +72,6 @@ const cart2Items = [
         items: cart2Items,
         ...cart2Totals,
       },
-      {
-        userId: users[11]._id,
-        items: cart2Items,
-        ...cart2Totals,
-      },
     ]);
 
 function randomDate(daysOffset = 0, past = false) {
@@ -143,27 +138,7 @@ const orders = await Order.insertMany([
     status: "Delivered",
     deliveryDate: randomDate(7, true),
   },
-  {
-    user: users[11]._id,
-    items: [
-      {
-        product: products[5]._id,
-        quantity: 1,
-        price: products[5].price * 1,
-      },
-      {
-        product: products[6]._id,
-        quantity: 2,
-        price: products[6].price * 2,
-      },
-    ],
-    shippingAddress: users[1].address,
-    paymentMethod: "Credit Card",
-    shippingPrice: 25,
-    totalPrice: products[5].price * 1 + products[6].price * 2 + 25,
-    status: "Delivered",
-    deliveryDate: randomDate(3, true),
-  },
+    
 ]);
 
     console.log("✅ Carts and Orders seeded successfully");

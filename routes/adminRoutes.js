@@ -13,6 +13,9 @@ router.patch("/users/:id", adminController.updateUser);
 router.delete("/users/:id", adminController.deleteUser);
 
 
+router.get("/orders", adminController.getAllOrders);
+router.put("/orders/:id", adminController.updateOrderStatus);
+
 
 // router.patch("/users/:id/role", adminController.updateUserRole);
 
