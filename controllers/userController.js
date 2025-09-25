@@ -2,8 +2,8 @@ const User = require("../models/User");
 
 exports.getProfile = async (req, res) => {
   try {
-    const userId = req.user.id; // assuming you have a middleware that sets req.user
-        const user = await User.findById(userId).select("-password -role");
+    const userId = req.user.userId; 
+    const user = await User.findById(userId).select("-password -role");
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (err) {
@@ -13,26 +13,29 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId; 
     const updates = req.body;
 
-    // Prevent updating sensitive fields like password or role directly
     delete updates.password;
     delete updates.role;
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updates, { new: true, runValidators: true }).select("-password -role");
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updates,
+      { new: true, runValidators: true }
+    ).select("-password -role");
+
     if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
-    res.status(200).json(updatedUser);
+    res.status(200).json(updatedUser); 
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-
 exports.deleteProfile = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const deletedUser = await User.findByIdAndDelete(userId);
     if (!deletedUser) return res.status(404).json({ message: "User not found" });
 
@@ -45,7 +48,7 @@ exports.deleteProfile = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    const userId = req.user.id; // comes from JWT via isAuth middleware
+    const userId = req.user.userId; 
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {

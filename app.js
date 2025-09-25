@@ -5,8 +5,12 @@ const logger = require("./middlewares/logger");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const productRoutes = require("./routes/productRoutes");
+const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
-const connectDB = require('./db')
+const connectDB = require('./db');
+const { use } = require("react");
 // const productRoutes = require("./routes/productRoutes.js");
 // const categoryRoutes = require("./routes/categoryRoutes.js");
 require("dotenv").config();
@@ -33,13 +37,12 @@ app.use((err, req, res, next) => {
 app.use(cors());
 
 
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/products", productRoutes)
-
-// app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
 // app.use("/api/cart", require("./routes/cartRoutes"));
 // app.use("/api/orders", require("./routes/orderRoutes"));
