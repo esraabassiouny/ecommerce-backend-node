@@ -10,7 +10,6 @@ const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 
 const connectDB = require('./db');
-const { use } = require("react");
 // const productRoutes = require("./routes/productRoutes.js");
 // const categoryRoutes = require("./routes/categoryRoutes.js");
 require("dotenv").config();
